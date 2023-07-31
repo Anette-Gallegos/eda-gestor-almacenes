@@ -39,7 +39,22 @@ public class GestionProductos {
 
     // Metodo para dar de baja un producto de un almacen
     public void darDeBajaProductoAlmacen(int codigoAlmacen, int codigoProducto) {
-
+        // obtener el almacen que corresponde al codigo
+        Almacen almacen = gestionAlmacenes.findAlmacenByCodigo(codigoAlmacen);
+        if (almacen == null) {
+            System.out.println("No se encontro el almacen con codigo: " + codigoAlmacen);
+            return;
+        }
+        
+        // obtener el producto a eliminar
+        Producto productoAEliminar = almacen.buscarProductoPorCodigo(codigoProducto);
+        if (productoAEliminar == null) {
+            System.out.println("No se encontro el producto con codigo: " + codigoProducto + " en el almacen");
+            return;
+        }
+        
+        almacen.getProductos().remove(productoAEliminar);
+        System.out.println("Producto eliminado del almacen con exito");
     }
 
     // Metodo para buscar un producto en un almacen
