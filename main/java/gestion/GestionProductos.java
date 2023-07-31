@@ -4,22 +4,45 @@ import estructura.GraphLink;
 import estructura.Vertex;
 import models.Almacen;
 import models.Producto;
+import models.Almacen;
 
 public class GestionProductos {
     private GraphLink<Almacen> almacenesGraph;
-
+    private GestionAlmacenes gestionAlmacenes;
+  
     public GestionProductos() {
         this.almacenesGraph = new GraphLink<>();
+    }
+  
+    public GestionProductos(GestionAlmacenes gestionAlmacenes) {
+        this.gestionAlmacenes = gestionAlmacenes;
     }
 
     // Método para establecer el grafo de almacenes
     public void setAlmacenesGraph(GraphLink<Almacen> almacenesGraph) {
         this.almacenesGraph = almacenesGraph;
     }
-
+  
     // Metodo para agregar un producto nuevo a un almacen
     public void agregarProductoAlmacen(int codigoAlmacen, int codigoProducto, String descripcion, int stock) {
-        // Implementación para agregar un producto a un almacen especifico
+        // obtener el almacen que corresponde al codigo
+        Almacen almacen = gestionAlmacenes.findAlmacenByCodigo(codigoAlmacen);
+        if (almacen == null) {
+            System.out.println("No se encontro el almacen con codigo: " + codigoAlmacen);
+            return;
+        }
+        
+        // verificar si el producto ya existe en el almacen
+        Producto productoExistente = almacen.buscarProductoPorCodigo(codigoProducto);
+        if (productoExistente != null) {
+            System.out.println("El producto con codigo: " + codigoProducto + " ya existe en el almacen");
+            return;
+        }
+        
+        // agregar el nuevo producto al almacen
+        Producto nuevoProducto = new Producto(codigoProducto, descripcion, stock);
+        almacen.getProductos().add(nuevoProducto);
+        System.out.println("Producto agregado al almacen con exito");
     }
 
     // Metodo para agregar productos a un almacen desde un archivo
@@ -29,7 +52,22 @@ public class GestionProductos {
 
     // Metodo para dar de baja un producto de un almacen
     public void darDeBajaProductoAlmacen(int codigoAlmacen, int codigoProducto) {
-        // Implementación para eliminar un producto de un almacen especifico
+        // obtener el almacen que corresponde al codigo
+        Almacen almacen = gestionAlmacenes.findAlmacenByCodigo(codigoAlmacen);
+        if (almacen == null) {
+            System.out.println("No se encontro el almacen con codigo: " + codigoAlmacen);
+            return;
+        }
+        
+        // obtener el producto a eliminar
+        Producto productoAEliminar = almacen.buscarProductoPorCodigo(codigoProducto);
+        if (productoAEliminar == null) {
+            System.out.println("No se encontro el producto con codigo: " + codigoProducto + " en el almacen");
+            return;
+        }
+        
+        almacen.getProductos().remove(productoAEliminar);
+        System.out.println("Producto eliminado del almacen con exito");
     }
 
     // Metodo para buscar un producto en un almacen
