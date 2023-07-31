@@ -102,6 +102,25 @@ public class GestionAlmacenes  {
     // Metodo para agregar un producto a un almacen
     public void agregarProductoAlmacen(int codigoAlmacen, int codigoProducto, String descripcion, int stock) {
         // Implementacion para agregar un producto a un almacen especifico
+        Almacen almacenEncontrado = null;
+        for (Vertex<Almacen> vertex : grafo.getListVertex()) {
+            // Se inicia un bucle 'for' que itera a través de todos los vértices (nodos) del grafo 'grafo'.
+            Almacen almacen = vertex.getData();
+            if (almacen.getCodigo() == codigoAlmacen) {
+                // Se verifica si el código del almacén actual es igual al código del almacén buscado ('codigoAlmacen').
+                almacenEncontrado = almacen;
+                break;
+            }
+        }
+
+        if (almacenEncontrado != null) {
+            // Se verifica si se encontró algún almacén con el código buscado.
+            Producto nuevoProducto = new Producto(codigoProducto, descripcion, stock);
+            almacenEncontrado.getProductos().add(nuevoProducto);
+            System.out.println("Se ha agregado el producto al almacén con código " + codigoAlmacen);
+        } else {
+            System.out.println("No se encontró ningún almacén con el código " + codigoAlmacen);
+        }
     }
 
     // Metodo para agregar productos a un almacen desde un archivo
@@ -118,6 +137,22 @@ public class GestionAlmacenes  {
     public Producto buscarProductoEnAlmacen(int codigoAlmacen, int codigoProducto) {
         // Implementacion para buscar un producto en un almacen especifico
         // Devuelve el producto encontrado o null si no existe
+        // Verificamos si el código del almacén coincide con el código proporcionado
+        for (Vertex<Almacen> vertex : grafo.getListVertex()) {
+            Almacen almacen = vertex.getData();
+            if (almacen.getCodigo() == codigoAlmacen) {
+                // Si encontramos el almacén, buscamos el producto dentro de sus productos
+                for (Producto producto : almacen.getProductos()) {
+                    // Verificamos si el código del producto coincide con el código proporcionado
+                    if (producto.getCodigo() == codigoProducto) {
+                        return producto;
+                    }
+                }
+                // no se encontró el producto en el almacén.
+                break;
+            }
+        }
+        return null;
     }
 
     // Metodo para mostrar los productos de un almacen
