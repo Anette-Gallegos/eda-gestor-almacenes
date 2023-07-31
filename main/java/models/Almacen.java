@@ -48,6 +48,15 @@ public class Almacen {
     public void setProductos(List<Producto> productos) {
         this.productos = productos;
     }
+    
+    public Producto buscarProductoPorCodigo(int codigoProducto) {
+        for (Producto producto : productos) {
+            if (producto.getCodigo() == codigoProducto) {
+                return producto;
+            }
+        }
+        return null;
+    }
 
     @Override
     public String toString() {
