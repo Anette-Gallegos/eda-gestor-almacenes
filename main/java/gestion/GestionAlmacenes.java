@@ -90,6 +90,7 @@ public class GestionAlmacenes  {
 
     // Metodo para buscar un producto en todos los almacenes
     public List<Almacen> buscarProductoEnAlmacenes(int codigoProducto) {
+        return null;
         // Implementacion para buscar un producto en todos los almacenes del grafo
         // Devuelve una lista de almacenes donde se encontro el producto
     }
